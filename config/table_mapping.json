@@ -1,0 +1,101 @@
+{
+  "sync_tables": [
+    {
+      "v_table_name": "employees_sync",
+      "v_oracle_table": "HR.EMPLOYEES",
+      "v_postgres_table": "public.employees",
+      "v_sync_mode": "incremental",
+      "v_timestamp_column": "LAST_UPDATED",
+      "v_primary_key": "EMPLOYEE_ID",
+      "v_enabled": true,
+      "v_description": "Employee master data sync",
+      "v_column_mapping": {
+        "EMPLOYEE_ID": "employee_id",
+        "FIRST_NAME": "first_name", 
+        "LAST_NAME": "last_name",
+        "EMAIL": "email",
+        "PHONE_NUMBER": "phone_number",
+        "HIRE_DATE": "hire_date",
+        "JOB_ID": "job_id",
+        "SALARY": "salary",
+        "DEPARTMENT_ID": "department_id",
+        "LAST_UPDATED": "last_updated"
+      },
+      "v_data_types": {
+        "employee_id": "INTEGER",
+        "first_name": "VARCHAR(50)",
+        "last_name": "VARCHAR(50)", 
+        "email": "VARCHAR(100)",
+        "phone_number": "VARCHAR(20)",
+        "hire_date": "DATE",
+        "job_id": "VARCHAR(10)",
+        "salary": "DECIMAL(10,2)",
+        "department_id": "INTEGER",
+        "last_updated": "TIMESTAMP"
+      },
+      "v_filters": "WHERE EMPLOYEE_ID > 0",
+      "v_order_by": "EMPLOYEE_ID"
+    },
+    {
+      "v_table_name": "departments_sync",
+      "v_oracle_table": "HR.DEPARTMENTS",
+      "v_postgres_table": "public.departments", 
+      "v_sync_mode": "full",
+      "v_timestamp_column": null,
+      "v_primary_key": "DEPARTMENT_ID",
+      "v_enabled": true,
+      "v_description": "Department master data sync",
+      "v_column_mapping": {
+        "DEPARTMENT_ID": "department_id",
+        "DEPARTMENT_NAME": "department_name",
+        "MANAGER_ID": "manager_id",
+        "LOCATION_ID": "location_id"
+      },
+      "v_data_types": {
+        "department_id": "INTEGER",
+        "department_name": "VARCHAR(100)",
+        "manager_id": "INTEGER", 
+        "location_id": "INTEGER"
+      },
+      "v_filters": null,
+      "v_order_by": "DEPARTMENT_ID"
+    },
+    {
+      "v_table_name": "orders_sync",
+      "v_oracle_table": "SALES.ORDERS",
+      "v_postgres_table": "public.orders",
+      "v_sync_mode": "incremental",
+      "v_timestamp_column": "CREATED_DATE",
+      "v_primary_key": "ORDER_ID", 
+      "v_enabled": true,
+      "v_description": "Sales orders transactional data",
+      "v_column_mapping": {
+        "ORDER_ID": "order_id",
+        "CUSTOMER_ID": "customer_id",
+        "ORDER_DATE": "order_date",
+        "TOTAL_AMOUNT": "total_amount",
+        "STATUS": "status",
+        "CREATED_DATE": "created_date",
+        "UPDATED_DATE": "updated_date"
+      },
+      "v_data_types": {
+        "order_id": "BIGINT",
+        "customer_id": "INTEGER",
+        "order_date": "DATE",
+        "total_amount": "DECIMAL(15,2)",
+        "status": "VARCHAR(20)",
+        "created_date": "TIMESTAMP",
+        "updated_date": "TIMESTAMP"
+      },
+      "v_filters": "WHERE STATUS != 'DELETED'",
+      "v_order_by": "ORDER_ID"
+    }
+  ],
+  "sync_rules": {
+    "v_default_batch_size": 1000,
+    "v_max_parallel_tables": 3,
+    "v_incremental_lookback_hours": 24,
+    "v_full_sync_schedule": "0 2 * * 0",
+    "v_incremental_sync_schedule": "*/30 * * * *"
+  }
+}
